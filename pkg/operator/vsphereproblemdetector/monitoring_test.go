@@ -8,6 +8,7 @@ import (
 	"github.com/openshift/library-go/pkg/operator/events"
 	promv1 "github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/utils/clock"
 )
 
 func TestSyncPrometheusRule(t *testing.T) {
@@ -34,7 +35,7 @@ func TestSyncPrometheusRule(t *testing.T) {
 			}
 
 			client := csoclients.NewFakeClients(initialObjects)
-			eventRecorder := events.NewInMemoryRecorder("vsphere-client")
+			eventRecorder := events.NewInMemoryRecorder("vsphere-client", clock.RealClock{})
 			c := &monitoringController{
 				operatorClient:   client.OperatorClient,
 				kubeClient:       client.KubeClient,

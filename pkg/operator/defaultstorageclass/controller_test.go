@@ -17,6 +17,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/equality"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/utils/clock"
 )
 
 type testContext struct {
@@ -52,7 +53,7 @@ func newController(test operatorTest) *testContext {
 
 	clients := csoclients.NewFakeClients(initialObjects)
 
-	recorder := events.NewInMemoryRecorder("operator")
+	recorder := events.NewInMemoryRecorder("operator", clock.RealClock{})
 	ctrl := NewController(clients, recorder)
 
 	return &testContext{
